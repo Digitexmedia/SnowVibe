@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowVibe - Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .top-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10;
+      padding: 12px 0;
+    }
+    .top-nav span {
+      margin: 0 20px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #bbb;
+    }
+    .top-nav span.active {
+      color: #fff;
+      border-bottom: 2px solid #fff;
+    }
+    .feed {
+      margin-top: 50px;
+      display: none;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+    .feed.active {
+      display: block;
+    }
+    .video-container {
+      position: relative;
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .overlay {
+      position: absolute;
+      bottom: 80px;
+      left: 15px;
+      right: 80px;
+      font-size: 14px;
+    }
+    .username { font-weight: bold; margin-bottom: 5px; }
+    .caption { margin-bottom: 5px; }
+    .hashtags { color: #4cc9f0; margin-bottom: 5px; }
+    .description { font-size: 12px; color: #ccc; }
+
+    /* Right-side action bar */
+    .actions {
+      position: absolute;
+      right: 10px;
+      bottom: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .action-btn span {
+      margin-top: 5px;
+    }
+    .follow-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #ff0050;
+      color: #fff;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #fff;
+    }
+    .followed {
+      background: #4caf50 !important;
+    }
+
+    /* Bottom navigation */
+    nav.bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 200;
+    }
+    nav.bottom a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <span class="tab active" data-tab="following">Following</span>
+    <span class="tab" data-tab="friends">Friends</span>
+    <span class="tab" data-tab="foryou">For You</span>
+  </div>
+
+  <!-- FEEDS -->
+  <div id="following" class="feed active"></div>
+  <div id="friends" class="feed"></div>
+  <div id="foryou" class="feed"></div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom">
+    <a href="home.html">🪙 Home</a>
+    <a href="discover.html">🔍 Discover</a>
+    <a href="post.html">🎦 Post</a>
+    <a href="inbox.html">📩 Inbox</a>
+    <a href="profile.html">👤 Profile</a>
+  </nav>
+
+  <script>
+    const videosData = {
+      following: [
+        { src: "https://files.catbox.moe/qxfbf6.mp4", username: "@aurora", caption: "Chill snow vibes ❄️", hashtags: "#snow #chill #relax", description: "Capturing the snowy mood." },
+        { src: "https://files.catbox.moe/naji9h.mp4", username: "@sky", caption: "Flying high ✈️", hashtags: "#travel #skyhigh #journey", description: "Exploring new heights." }
+      ],
+      friends: [
+        { src: "https://files.catbox.moe/cbngr9.mp4", username: "@frost", caption: "Snowboarding with friends 🏂", hashtags: "#snowboard #friends #fun", description: "The best times together." },
+        { src: "https://files.catbox.moe/pwuh4a.mp4", username: "@jane", caption: "City walk 🚶‍♀️", hashtags: "#citylife #urban #walks", description: "Peaceful evening walks." }
+      ],
+      foryou: [
+        { src: "https://files.catbox.moe/faxfkk.mp4", username: "@leo", caption: "Frozen waterfall ❄️", hashtags: "#nature #cold #explore", description: "Nature at its best." },
+        { src: "https://files.catbox.moe/58zyij.mp4", username: "@mark", caption: "Workout grind 💪", hashtags: "#gym #workout #health", description: "Stay strong, stay fit." },
+
+        // Newly added videos
+        { src: "https://files.catbox.moe/b4y1x4.mp4", username: "@user1", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/zu5ifz.mp4", username: "@user2", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/d243zd.mp4", username: "@user3", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/xv3n3a.mp4", username: "@user4", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/9d6ash.mp4", username: "@user5", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/t1a3a2.mp4", username: "@user6", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/y00nv8.mp4", username: "@user7", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/iq3w37.mp4", username: "@user8", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/y4jdpf.mp4", username: "@user9", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/iy871m.mp4", username: "@user10", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/nz6ibz.mp4", username: "@user11", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/azz7eu.mp4", username: "@user12", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." },
+        { src: "https://files.catbox.moe/5wekmc.mp4", username: "@user13", caption: "New vibe ✨", hashtags: "#snowvibe", description: "Fresh upload." }
+      ]
+    };
+
+    function createVideoCard(video) {
+      const container = document.createElement("div");
+      container.classList.add("video-container");
+      container.innerHTML = `
+        <video src="${video.src}" playsinline muted loop></video>
+        <div class="overlay">
+          <div class="username">${video.username}</div>
+          <div class="caption">${video.caption}</div>
+          <div class="hashtags">${video.hashtags}</div>
+          <div class="description">${video.description}</div>
+        </div>
+        <div class="actions">
+          <div class="action-btn follow" data-username="${video.username}">
+            <div class="follow-btn">+</div>
+            <span>Follow</span>
+          </div>
+          <div class="action-btn like">
+            ❤️
+            <span class="like-count">0</span>
+          </div>
+          <div class="action-btn comment"
+            data-src="${video.src}"
+            data-user="${video.username}"
+            data-caption="${video.caption}"
+            data-tags="${video.hashtags}"
+            data-desc="${video.description}">
+            💬
+            <span>Comment</span>
+          </div>
+          <div class="action-btn favorite">
+            ⭐
+            <span>Save</span>
+          </div>
+          <div class="action-btn share" data-link="${video.src}">
+            ↗️
+            <span>Share</span>
+          </div>
+        </div>
+      `;
+      return container;
+    }
+
+    function loadFeed(feedId) {
+      const feed = document.getElementById(feedId);
+      feed.innerHTML = "";
+      videosData[feedId].forEach(video => {
+        feed.appendChild(createVideoCard(video));
+      });
+      setupObserver(feed.querySelectorAll("video"));
+    }
+
+    function setupObserver(videos) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.muted = false;
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.8 });
+
+      videos.forEach(video => {
+        video.controls = true;
+        observer.observe(video);
+      });
+    }
+
+    // INIT
+    ["following", "friends", "foryou"].forEach(loadFeed);
+
+    // Top nav tabs
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        document.querySelectorAll(".feed").forEach(f => f.classList.remove("active"));
+        document.getElementById(tab.dataset.tab).classList.add("active");
+      });
+    });
+
+    // Delegated actions
+    document.body.addEventListener("click", e => {
+      if (e.target.closest(".follow")) {
+        const btn = e.target.closest(".follow").querySelector(".follow-btn");
+        if (!btn.classList.contains("followed")) {
+          btn.classList.add("followed");
+          btn.textContent = "✓";
+          e.target.closest(".follow").querySelector("span").textContent = "Following";
+        }
+      }
+      if (e.target.closest(".like")) {
+        const like = e.target.closest(".like");
+        const count = like.querySelector(".like-count");
+        count.textContent = parseInt(count.textContent) + 1;
+      }
+      if (e.target.closest(".comment")) {
+        const c = e.target.closest(".comment");
+        const params = new URLSearchParams({
+          src: c.dataset.src,
+          user: c.dataset.user,
+          caption: c.dataset.caption,
+          tags: c.dataset.tags,
+          desc: c.dataset.desc
+        });
+        window.location.href = "comment.html?" + params.toString();
+      }
+      if (e.target.closest(".favorite")) {
+        const fav = e.target.closest(".favorite");
+        fav.querySelector("span").textContent =
+          fav.querySelector("span").textContent === "Save" ? "Saved" : "Save";
+      }
+      if (e.target.closest(".share")) {
+        const link = e.target.closest(".share").dataset.link;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(link).then(() => alert("Video link copied!"));
+        } else {
+          alert("Copy manually: " + link);
+        }
+      }
+    });
+  </script>
+</body>
+  </html>
