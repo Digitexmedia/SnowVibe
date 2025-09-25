@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowVibe - Post</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      color: #333;
+      padding: 20px;
+      padding-bottom: 80px; /* space for bottom nav */
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    .upload-box {
+      background: white;
+      border: 2px dashed #aaa;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .upload-box input {
+      display: none;
+    }
+    .preview {
+      margin-top: 20px;
+      display: none;
+    }
+    .preview video {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .caption-box {
+      margin-top: 20px;
+    }
+    .caption-box textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+    .post-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #ff2d55;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 200;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Create a Post</h2>
+  <label class="upload-box">
+    📹 Tap to upload a video
+    <input type="file" id="videoUpload" accept="video/*">
+  </label>
+
+  <div class="preview" id="preview">
+    <video controls></video>
+  </div>
+
+  <div class="caption-box">
+    <textarea id="caption" placeholder="Write a caption..."></textarea>
+  </div>
+
+  <button class="post-btn" id="postBtn">Post</button>
+
+  <nav>
+    <a href="home.html">🏠 Home</a>
+    <a href="discover.html">🔍 Discover</a>
+    <a href="post.html">➕ Post</a>
+    <a href="inbox.html">📩 Inbox</a>
+    <a href="profile.html">👤 Profile</a>
+  </nav>
+
+  <script>
+    const uploadInput = document.getElementById('videoUpload');
+    const preview = document.getElementById('preview');
+    const previewVideo = preview.querySelector('video');
+    const postBtn = document.getElementById('postBtn');
+
+    uploadInput.addEventListener('change', () => {
+      const file = uploadInput.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        previewVideo.src = url;
+        preview.style.display = 'block';
+      }
+    });
+
+    postBtn.addEventListener('click', () => {
+      const caption = document.getElementById('caption').value;
+      if (!uploadInput.files[0]) {
+        alert("Please upload a video first!");
+        return;
+      }
+      alert("✅ Video posted with caption: " + caption);
+      // In a real app, here we would send video + caption to backend
+    });
+  </script>
+</body>
+</html>
