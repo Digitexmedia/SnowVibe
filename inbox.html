@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowVibe - Inbox</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      background: #111;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+      z-index: 100;
+    }
+    .chat-list {
+      margin-top: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chat-item:hover {
+      background: #333;
+    }
+    .chat-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid #fff;
+    }
+    .chat-info {
+      flex: 1;
+    }
+    .chat-info .username {
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+    .chat-info .last-message {
+      font-size: 14px;
+      color: #aaa;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-time {
+      font-size: 12px;
+      color: #666;
+      margin-left: 5px;
+    }
+
+    /* Bottom navigation */
+    nav.bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 200;
+    }
+    nav.bottom a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Inbox</header>
+
+  <div class="chat-list">
+    <div class="chat-item" onclick="openChat('@aurora')">
+      <img src="https://files.catbox.moe/eh0efs.jpg" alt="Aurora">
+      <div class="chat-info">
+        <div class="username">@aurora</div>
+        <div class="last-message">Hey, check out my new video!</div>
+      </div>
+      <div class="chat-time">12:45 PM</div>
+    </div>
+    <div class="chat-item" onclick="openChat('@sky')">
+      <img src="https://placekitten.com/201/201" alt="Sky">
+      <div class="chat-info">
+        <div class="username">@sky</div>
+        <div class="last-message">Flying high ✈️</div>
+      </div>
+      <div class="chat-time">11:30 AM</div>
+    </div>
+    <div class="chat-item" onclick="openChat('@frost')">
+      <img src="https://placekitten.com/202/202" alt="Frost">
+      <div class="chat-info">
+        <div class="username">@frost</div>
+        <div class="last-message">Snowboarding tomorrow?</div>
+      </div>
+      <div class="chat-time">Yesterday</div>
+    </div>
+    <div class="chat-item" onclick="openChat('@jane')">
+      <img src="https://placekitten.com/203/203" alt="Jane">
+      <div class="chat-info">
+        <div class="username">@jane</div>
+        <div class="last-message">City walk was amazing!</div>
+      </div>
+      <div class="chat-time">Yesterday</div>
+    </div>
+    <!-- Add more chat items as needed -->
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom">
+    <a href="home.html">🏠 Home</a>
+    <a href="discover.html">🔍 Discover</a>
+    <a href="post.html">➕ Post</a>
+    <a href="inbox.html">📩 Inbox</a>
+    <a href="profile.html">👤 Profile</a>
+  </nav>
+
+  <script>
+    function openChat(username) {
+      // Redirect to chat page with username as a parameter
+      window.location.href = `chat.html?user=${username}`;
+    }
+  </script>
+
+</body>
+</html>
